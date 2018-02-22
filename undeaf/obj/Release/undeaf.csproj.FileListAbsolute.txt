@@ -1,0 +1,8 @@
+C:\Users\dboic\source\repos\undeaf\undeaf-net\bin\Release\undeaf-net.exe.config
+C:\Users\dboic\source\repos\undeaf\undeaf-net\bin\Release\undeaf-net.exe
+C:\Users\dboic\source\repos\undeaf\undeaf-net\bin\Release\undeaf-net.pdb
+C:\Users\dboic\source\repos\undeaf\undeaf-net\bin\Release\SubtitlesParser.dll
+C:\Users\dboic\source\repos\undeaf\undeaf-net\obj\Release\undeaf.csprojResolveAssemblyReference.cache
+C:\Users\dboic\source\repos\undeaf\undeaf-net\obj\Release\undeaf.csproj.CoreCompileInputs.cache
+C:\Users\dboic\source\repos\undeaf\undeaf-net\obj\Release\undeaf-net.exe
+C:\Users\dboic\source\repos\undeaf\undeaf-net\obj\Release\undeaf-net.pdb
