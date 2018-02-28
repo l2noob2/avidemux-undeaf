@@ -68,7 +68,9 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="undeafOptions.cs" />
+    <Compile Include="undeafLogger\undeafLogger.cs" />
+    <Compile Include="undeafOptions\undeafOptions.cs" />
+    <Compile Include="undeafLogger\undeafStatus.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

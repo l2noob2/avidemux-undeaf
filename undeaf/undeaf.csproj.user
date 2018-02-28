@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
-    <StartArguments>-i "C:\Users\Administrator.BOICE\Documents\Making of Africa.py" -rd -sc -a -c -od "E:\Incoming\Mine\WORKING"</StartArguments>
+    <StartArguments>-subs:default -out:dump -out:genchp -out:dir "E:\Incoming\Mine\WORKING" -in:py "C:\Users\Administrator.BOICE\Documents\Ridiculousness.S10E17.py" -help</StartArguments>
   </PropertyGroup>
   <PropertyGroup>
     <PublishUrlHistory />

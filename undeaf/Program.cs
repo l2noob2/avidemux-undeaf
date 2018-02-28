@@ -19,13 +19,36 @@ namespace undeaf
         static List<SubtitleItem> subsOutput = new List<SubtitleItem>();
         static List<SubtitleItem> subsModTrim = new List<SubtitleItem>();
 
+        static undeafLogger logger = null;
+
         static void Main(string[] args)
         {
-            Console.WriteLine(System.AppDomain.CurrentDomain.FriendlyName + " - " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString());
+            undeafStatus status = new undeafStatus();
+            string appName = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name + " - " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
-            options = new undeafOptions(args);
+            logger = new undeafLogger();
 
-            readADMFile(options);
+            logger.Log(logger.DefaultMessageType, appName + " started " + DateTime.Today.ToShortDateString() + " " + DateTime.Now.ToShortTimeString());
+
+            options = new undeafOptions(args, logger);
+            if (options.Help.DisplayHelp)
+            {
+                options.Help.PrintHelp(logger.GetByName("HELP"), logger);
+            }
+            else
+            {
+                options.PrintOptions(logger.GetByName("DEBUG"), logger);
+                if (!options.ValidateOptions(logger.GetByName("WARN"), logger.GetByName("ERROR"), logger))
+                {
+                    logger.Log(logger.GetByName("HELP"), "Use command line option -help for more information.");
+                    status.HasError = true;
+                }
+                else
+                {
+                    readADMFile(options, status);
+                }
+                
+            }
         }
 
         static void ParseOptions()
@@ -42,16 +65,16 @@ namespace undeaf
 
         static void PrintUsage()
         {
-            Log("Usage: undeaf <input_file> <offset>");
-            Log("     <input_file> AVIDemux save file, .py");
-            Log("     <offset>     Subtitle offset in ms");
+            logger.Log(logger.GetByName("INFO"), "Usage: undeaf <input_file> <offset>");
+            logger.Log(logger.GetByName("INFO"), "     <input_file> AVIDemux save file, .py");
+            logger.Log(logger.GetByName("INFO"), "     <offset>     Subtitle offset in ms");
         }
 
-        static void Log(string line)
-        {
-            var dur = DateTime.Now - appStart;
-            Console.WriteLine("[" + string.Format("0000", dur.Seconds) + "] " + line);
-        }
+        //static void Log(string line)
+        //{
+        //    var dur = DateTime.Now - appStart;
+        //    Console.WriteLine("[" + string.Format("0000", dur.Seconds) + "] " + line);
+        //}
 
         static TimeSpan DFtoTimeSpan(string df)
         {
@@ -103,7 +126,7 @@ namespace undeaf
             }
         }
 
-        static void readADMFile(undeafOptions opts)
+        static void readADMFile(undeafOptions opts, undeafStatus status)
         {
             using (StreamReader reader = File.OpenText(opts.Input.AvidemuxPy))
             {
@@ -294,11 +317,12 @@ namespace undeaf
                                 }
 
                                 //log
-                                Log("Moved " + string.Format("{0:000}", numSubs) + " subs from " + TimeSpanToHR(startTime) + " -> " + TimeSpanToHR(endTime) + " to " + TimeSpanToHR(programLength) + " -> " + TimeSpanToHR(programLength + lengthTime));
+                                logger.Log(logger.GetByName("INFO"), "Moved " + string.Format("{0:000}", numSubs) + " subs from " + TimeSpanToHR(startTime) + " -> " + TimeSpanToHR(endTime) + " to " + TimeSpanToHR(programLength) + " -> " + TimeSpanToHR(programLength + lengthTime));
                             }
                             catch (Exception e)
                             {
-                                Log(e.ToString());
+                                status.HasError = true;
+                                logger.Log(logger.GetByName("DEBUG"), e.ToString());
                             }
                             //locals
                             totalSubs += numSubs;
@@ -321,7 +345,7 @@ namespace undeaf
                 }
 
                 //log
-                Log(string.Format("{0:0} subs, {1:0} chapters, ", totalSubs, numChapters) + TimeSpanToHR(programLength) + " program length");
+                logger.Log(logger.GetByName("INFO"), string.Format("{0:0} subs, {1:0} chapters, ", totalSubs, numChapters) + TimeSpanToHR(programLength) + " program length");
 
                 //sort
                 subsOutput.Sort(delegate (SubtitleItem s1, SubtitleItem s2)
